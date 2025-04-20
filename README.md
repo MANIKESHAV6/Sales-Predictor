@@ -89,5 +89,5 @@ Ensure the `monthly_sales.csv` file is present in your project directory. It sho
 
 ---
 
-Source Code
-Full implementation is available in [`sales_predictor.py`](sales_predictor.py)
+## Source Code
+- Full implementation is available in [`sales_predictor.py`](sales_predictor.py)
