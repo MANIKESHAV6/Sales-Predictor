@@ -87,3 +87,7 @@ Ensure the `monthly_sales.csv` file is present in your project directory. It sho
 2. Install dependencies using `pip install -r requirements.txt`
 3. Run the main script to train and evaluate the model
 
+---
+
+Source Code
+Full implementation is available in [`sales_predictor.py`](sales_predictor.py)
