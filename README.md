@@ -89,5 +89,16 @@ Ensure the `monthly_sales.csv` file is present in your project directory. It sho
 
 ---
 
+## Model Performance
+The sales predictor uses a linear regression model trained on past sales data. It forecasts future sales and evaluates performance using key regression metrics: RMSE, MAE, and R² Score.
+
+The output includes:
+
+- A comparison of actual vs. predicted sales for the last 12 months.
+
+- A visualization to illustrate prediction accuracy and trends.
+
+The model demonstrates a basic ability to follow sales patterns, though some deviation exists. Future improvements could involve advanced preprocessing, more relevant features, or experimenting with different algorithms to boost accuracy.
+
 ## Source Code
 - Full implementation is available in [`sales_predictor.py`](sales_predictor.py)
