@@ -1,6 +1,18 @@
+import pandas as pd
+
+# Load dataset from the web
+url = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/shampoo.csv"
+df = pd.read_csv(url)
+
+# Convert Month to datetime and rename columns
+df.columns = ['Month', 'Sales']
+df['Month'] = pd.to_datetime(df['Month'], format='%m-%y')
+
+# Show the dataset
+print(df.head())
 # sales_predictor.py
 
-import pandas as pd
+
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
@@ -8,10 +20,10 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import matplotlib.pyplot as plt
 
 # Load dataset
-df = pd.read_csv("monthly_sales.csv")
-df['date'] = pd.to_datetime(df['date'])
-df.set_index('date', inplace=True)
-df['sales_diff'] = df['sales'].diff()
+
+df['Month'] = pd.to_datetime(df['Month'])
+df.set_index('Month', inplace=True)
+df['sales_diff'] = df['Sales'].diff()
 df.dropna(inplace=True)
 
 # Create supervised learning format
@@ -42,30 +54,31 @@ model.fit(X_train_scaled, y_train)
 predicted_diff = model.predict(X_test_scaled)
 
 # Reconstruct actual sales
+
 predicted_sales = []
-test_sales = df['sales'].values[-13:]
+test_sales = df['Sales'].values[-(len(predicted_diff)+1):]
 
 for i in range(len(predicted_diff)):
     value = predicted_diff[i] + test_sales[i]
     predicted_sales.append(value)
 
-# Evaluation
-rmse = np.sqrt(mean_squared_error(test_sales[1:], predicted_sales))
-mae = mean_absolute_error(test_sales[1:], predicted_sales)
-r2 = r2_score(test_sales[1:], predicted_sales)
+# Ensure same length before evaluation
+actual = test_sales[1:]
+predicted = predicted_sales
 
-print("Root Mean Squared Error (RMSE):", round(rmse, 2))
-print("Mean Absolute Error (MAE):", round(mae, 2))
-print("R² Score:", round(r2, 2))
+print("Actual:", actual)
+print("Predicted:", predicted)
 
-# Plotting
-plt.figure(figsize=(10, 5))
-plt.plot(df.index[-13:], test_sales, label='Actual Sales')
-plt.plot(df.index[-12:], predicted_sales, label='Predicted Sales', color='red')
-plt.title('Actual vs Predicted Sales')
-plt.xlabel('Date')
-plt.ylabel('Sales')
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.show()
+print("Lengths → Actual:", len(actual), "Predicted:", len(predicted))
+
+# Evaluation (only if lengths match)
+if len(actual) == len(predicted):
+    rmse = np.sqrt(mean_squared_error(actual, predicted))
+    mae = mean_absolute_error(actual, predicted)
+    r2 = r2_score(actual, predicted)
+
+    print("Root Mean Squared Error (RMSE):", round(rmse, 2))
+    print("Mean Absolute Error (MAE):", round(mae, 2))
+    print("R² Score:", round(r2, 2))
+else:
+    print("❌ Cannot evaluate: Actual and Predicted lengths do not match.")
