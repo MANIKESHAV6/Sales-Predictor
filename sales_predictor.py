@@ -1,13 +1,13 @@
 import pandas as pd
 
 # Load dataset from the web
-url = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/shampoo.csv"
+url = "Month_Value_1.csv"
 df = pd.read_csv(url)
 
 # Convert Month to datetime and rename columns
-df.columns = ['Month', 'Sales']
-df['Month'] = pd.to_datetime(df['Month'], format='%m-%y')
-
+df = df[['Period', 'Sales_quantity']]
+df.columns = ['Period', 'Sales_quantity']
+df['Period'] = pd.to_datetime(df['Period'],format='%d.%m.%Y')
 # Show the dataset
 print(df.head())
 # sales_predictor.py
@@ -21,9 +21,9 @@ import matplotlib.pyplot as plt
 
 # Load dataset
 
-df['Month'] = pd.to_datetime(df['Month'])
-df.set_index('Month', inplace=True)
-df['sales_diff'] = df['Sales'].diff()
+df['Period'] = pd.to_datetime(df['Period'])
+df.set_index('Period', inplace=True)
+df['sales_diff'] = df['Sales_quantity'].diff()
 df.dropna(inplace=True)
 
 # Create supervised learning format
@@ -56,7 +56,7 @@ predicted_diff = model.predict(X_test_scaled)
 # Reconstruct actual sales
 
 predicted_sales = []
-test_sales = df['Sales'].values[-(len(predicted_diff)+1):]
+test_sales = df['Sales_quantity'].values[-(len(predicted_diff)+1):]
 
 for i in range(len(predicted_diff)):
     value = predicted_diff[i] + test_sales[i]
