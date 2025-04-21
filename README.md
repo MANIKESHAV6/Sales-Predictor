@@ -100,5 +100,7 @@ The output includes:
 
 The model demonstrates a basic ability to follow sales patterns, though some deviation exists. Future improvements could involve advanced preprocessing, more relevant features, or experimenting with different algorithms to boost accuracy.
 
+---
+
 ## Source Code
 - Full implementation is available in [`sales_predictor.py`](sales_predictor.py)
